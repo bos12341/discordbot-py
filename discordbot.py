@@ -11,20 +11,16 @@ TOKEN = os.environ['TOKEN']
 client = discord.Client()
 
 @client.event
-async def on_ready():
-    print(f'Logged in as {client.user}.')
-
-@client.event
 async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content == f'{PREFIX}call':
-        await message.channel.send("callback!")
+    # 저장할 파일 경로와 이름 설정
+    file_path = 'saved_messages.txt'
 
-    if message.content.startswith(f'{PREFIX}hello'):
-        await message.channel.send('Hello!')
-
+    # 메시지 내용 가져와서 파일에 저장
+    with open(file_path, 'a') as file:
+        file.write(f'{message.author.name}: {message.content}\n')
 
 try:
     client.run(TOKEN)
